@@ -63,11 +63,12 @@ class AEFIT5(models.base.VAE):
         self.compile(
             #optimizer  = tf.keras.optimizers.SGD(learning_rate=1e-3),
             #optimizer  = tf.keras.optimizers.Adagrad(learning_rate=1e-3),
-            optimizer  = tf.keras.optimizers.Adam(learning_rate=1e-3),            
-            loss       = self.compute_mse_loss,
+            optimizer   = tf.keras.optimizers.Adam(learning_rate=1e-3),            
+            loss        = self.compute_mse_loss,
             # loss       = self.compute_cross_entropy_loss,
             # logit_loss = True,
-            metrics    = [mse,akl,mkl,b]
+            metrics     = [mse,akl,mkl,b],
+            run_eagerly = True
         )
         print('AEFIT5 ready:')
 
@@ -182,7 +183,7 @@ class AEFIT5(models.base.VAE):
         else:
             kl_loss = self.beta * tf.reduce_mean(mkl_loss)
         if training is True:
-            self.add_loss(kl_loss)
+            self.add_loss(lambda: kl_loss)
         # else:
         #     self.add_loss(0.)
         return XY
@@ -196,7 +197,7 @@ class AEFIT5(models.base.VAE):
         if training:
             gradients = tape.gradient(loss, self.trainable_variables)
             self.optimizer.apply_gradients(zip(gradients, self.trainable_variables))
-        return loss
+        return {"loss":loss}
 
     def compile(self, optimizer=None, loss=None, logit_loss=False, metrics=None, **kwargs):
         if optimizer is None: 

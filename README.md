@@ -4,12 +4,15 @@
 To generate the synthetic curves the [`generate_gaussian_mixture_curve()`](https://github.com/nicolagulmini/RFX_HunchColab/blob/master/utils.py) method is used. It is done because a wide variety of shapes can be obtained through a mixture of gaussians. So, in this case, the gaussians should not be seen as distributions, but only a method to obtain the curves to train the model. This method returns an array with all the x points and all the y points, in one dimension (for instance `np.array([x_1, x_2, x_3, y_1, y_2, y_3])`) because this is the format to train our model. As default, the method returns 2000 points (so an array of 4000 entries: 2000 x and 2000 y) from the mixture of two gaussians: the first one is a standard gaussian, the second one is a N(4,2). The first considered point is x=-3, the sample period is 0.005. It is possible to add some noise to each point, as a N(0, 0.001) and setting `plot=True` the method shows the plot of the curve. Here some examples:
 
 - this is the result of the default method `generate_gaussian_mixture_curve(plot=True)`
+
 ![prova2](https://user-images.githubusercontent.com/62892813/135228081-17cc5094-64be-4c84-8f8f-ec864ff421f4.png)
 
 - here the result of the `generate_gaussian_mixture_curve(n_p=4000, n_g=5, mean_and_vars=[(i*5, 1) for i in range(5)], plot=True)` 
+
 ![prova](https://user-images.githubusercontent.com/62892813/135228089-ee04c574-155d-4340-80d9-3d51aed6fa4a.png)
 
 - `generate_gaussian_mixture_curve(n_p=100, n_g=2, mean_and_vars=[(i*3, 1) for i in range(2)], start=-1, sample_period=.05, awgn_dev=.01, plot=True)`
+
 ![prova](https://user-images.githubusercontent.com/62892813/135228808-19abffda-5ff3-4107-88f6-320e61b392cd.png)
 
 

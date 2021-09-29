@@ -1,5 +1,8 @@
 # A deep learning approach for data recovery in the Soft X-Ray fusion plasma diagnostics
 
+## Utils
+To generate the synthetic curves the [`generate_gaussian_mixture_curve()`](https://github.com/nicolagulmini/RFX_HunchColab/blob/master/utils.py) method is used. It is done because a wide variety of shapes can be obtained through a mixture of gaussians. So, in this case, the gaussians should not be seen as distributions, but only a method to obtain the curves to train the model. 
+
 ## References:
 ### Plasma fusion
 - https://theconversation.com/we-wont-have-fusion-generators-in-five-years-but-the-holy-grail-of-clean-energy-may-still-be-on-its-way-132250

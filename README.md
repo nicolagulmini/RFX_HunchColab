@@ -14,4 +14,6 @@
 - https://towardsdatascience.com/understanding-variational-autoencoders-vaes-f70510919f73
 - https://blog.evjang.com/2016/08/variational-bayes.html
 - https://towardsdatascience.com/variational-inference-for-neural-networks-a4b5cf72b24
-- [Understanding](https://arxiv.org/pdf/1804.03599.pdf)
+- [Understanding disentangling in β-VAE](https://arxiv.org/pdf/1804.03599.pdf)
+- [Auto-Encoding Variational Bayes](https://arxiv.org/pdf/1312.6114.pdf)
+- [From Autoencoder to Beta-VAE](https://lilianweng.github.io/lil-log/2018/08/12/from-autoencoder-to-beta-vae.html)

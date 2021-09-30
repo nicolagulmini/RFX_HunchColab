@@ -16,6 +16,7 @@ To generate the synthetic curves the [`generate_gaussian_mixture_curve()`](https
 ![prova](https://user-images.githubusercontent.com/62892813/135228808-19abffda-5ff3-4107-88f6-320e61b392cd.png)
 
 Here a couple of gifs with the same curves changing the noise:
+
 <img src = "https://user-images.githubusercontent.com/62892813/135477952-1dbbe75b-6272-4e6f-af58-b305be2675d6.gif" width = "315" height = "210"><img src = "https://user-images.githubusercontent.com/62892813/135477957-550d3a46-c1ba-4c0b-b431-df579504de5e.gif" width = "315" height = "210">
 
 ## References:

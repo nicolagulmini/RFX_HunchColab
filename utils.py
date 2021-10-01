@@ -11,6 +11,3 @@ def generate_gaussian_mixture_curve(n_p=2000, n_g=2, mean_and_vars=[(0,1), (4,2)
         plt.plot(x, y)
         plt.show()
     return array(x+y)
-
-number_of_gaussians = 5
-generate_gaussian_mixture_curve(n_p=4000, n_g=number_of_gaussians, mean_and_vars=[(i*5, 1) for i in range(number_of_gaussians)], plot=True)

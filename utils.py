@@ -10,4 +10,4 @@ def generate_gaussian_mixture_curve(n_p=2000, n_g=2, mean_and_vars=[(0,1), (4,2)
     if plot:
         plt.plot(x, y)
         plt.show()
-    return array(x.tolist()+y.tolist())
+    return array(x.tolist()+y)

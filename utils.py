@@ -14,7 +14,7 @@ def generate_gaussian_mixture_curve_1(n_p=2000, n_g=2, mean_and_vars=[(0,1), (4,
 
 def generate_gaussian_mixture_curve_2(n_p=100, mean_and_vars=[(0,0.01), (0.5,0.01)], awgn_dev=.001, plot=False):
     x = linspace(0, 1, n_p)
-    y = [sum([norm.pdf(el, mean_and_vars[i][0], mean_and_vars[i][1])+normal(0, awgn_dev) for i in range(len(mean_and_vars)]) for el in x]
+    y = [sum([norm.pdf(el, mean_and_vars[i][0], mean_and_vars[i][1])+normal(0, awgn_dev) for i in range(len(mean_and_vars))]) for el in x]
     y = y/max(y)
     if plot:
         plt.plot(x, y)

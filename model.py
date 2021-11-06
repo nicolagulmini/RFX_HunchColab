@@ -56,7 +56,7 @@ def decoder(latent_dim, target_shape, name='decoder', summary=False):
     return decoder_model
 
 class VAE(keras.Model):
-    def __init__(self, input_shape, latent_dim, beta=1, **kwargs):
+    def __init__(self, input_shape, latent_dim, beta=1., **kwargs):
         super(VAE, self).__init__(**kwargs)
         self.encoder = encoder(input_shape, latent_dim)
         self.decoder = decoder(latent_dim, input_shape)

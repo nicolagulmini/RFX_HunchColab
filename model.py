@@ -27,7 +27,7 @@ class betaScheduler(keras.callbacks.Callback):
         beta = float(tf.keras.backend.get_value(self.model.beta))
         scheduled_beta = self.schedule(epoch, beta)
         tf.keras.backend.set_value(self.model.beta, scheduled_beta)
-        print("Epoch %d: beta parameter is %6.4f." % (epoch, scheduled_beta))
+        print("Epoch %d: beta parameter is %f." % (epoch, scheduled_beta))
 
 def encoder(input_shape, latent_dim, name='encoder', summary=False):
     encoder_inputs = keras.Input(shape=input_shape)

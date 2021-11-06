@@ -90,7 +90,7 @@ class VAE(keras.Model):
             name="reconstruction_loss"
         )
         self.kl_loss_tracker = keras.metrics.Mean(name="kl_loss")
-        self.beta = tf.Variable(beta)
+        self.beta = tf.Variable(beta, trainable=False)
 
     @property
     def metrics(self):

@@ -84,7 +84,7 @@ class VAE(keras.Model):
         with tf.GradientTape() as tape:
             z_mean, z_log_var, z = self.encoder(data)
             reconstruction = self.decoder(z)
-            reconstruction_loss = tf.keras.losses.MeanSquaredError(reduction="auto", name="mean_squared_error")(data, reconstruction)
+            reconstruction_loss = tf.keras.losses.MeanSquaredError(reduction="auto")(data, reconstruction)
             kl_loss = -0.5 * (1 + z_log_var - tf.square(z_mean) - tf.exp(z_log_var))
             kl_loss = tf.reduce_mean(tf.reduce_sum(kl_loss, axis=1))
             total_loss = reconstruction_loss + self.beta*kl_loss
@@ -94,7 +94,7 @@ class VAE(keras.Model):
         self.reconstruction_loss_tracker.update_state(reconstruction_loss)
         self.kl_loss_tracker.update_state(kl_loss)
         return {
-            "loss": self.total_loss_tracker.result(),
+            "total_loss": self.total_loss_tracker.result(),
             "reconstruction_loss": self.reconstruction_loss_tracker.result(),
             "kl_loss": self.kl_loss_tracker.result(),
         }
@@ -102,7 +102,7 @@ class VAE(keras.Model):
     def reconstruct_input(self, data):
         z_mean, z_log_var, z = self.encoder(data)
         reconstruction = self.decoder(z_mean)
-        reconstruction_loss = tf.keras.losses.MeanSquaredError(reduction="auto", name="mean_squared_error")(data, reconstruction)
+        reconstruction_loss = tf.keras.losses.MeanSquaredError(reduction="auto")(data, reconstruction)
         kl_loss = -0.5 * (1 + z_log_var - tf.square(z_mean) - tf.exp(z_log_var))
         kl_loss = tf.reduce_mean(tf.reduce_sum(kl_loss, axis=1))
         total_loss = reconstruction_loss + self.beta*kl_loss

@@ -55,10 +55,10 @@ def decoder(latent_dim, target_shape, name='decoder', summary=False):
     return decoder_model
 
 class VAE(keras.Model):
-    def __init__(self, encoder, decoder, **kwargs):
+    def __init__(self, input_shape, latent_dim, decoder, **kwargs):
         super(VAE, self).__init__(**kwargs)
-        self.encoder = encoder
-        self.decoder = decoder
+        self.encoder = encoder(input_shape, latent_dim)
+        self.decoder = decoder(latent_dim, input_shape)
         self.total_loss_tracker = keras.metrics.Mean(name="total_loss")
         self.reconstruction_loss_tracker = keras.metrics.Mean(
             name="reconstruction_loss"

@@ -121,7 +121,7 @@ class VAE(keras.Model):
     def get_lr(self):
         return self.optimizer.lr.numpy()
 
-    def plot_latent_space(self, sub_len=20, step=.2, dimensions=[0, 1], savefig=False): 
+    def plot_latent_space(self, sub_len=20, step=.2, dimensions=[0, 1], savefig=False, name='latent_space.png'): 
         fig, axs = plt.subplots(sub_len, sub_len, sharex='all', sharey='all', figsize=(sub_len, sub_len))
 
         if (not len(dimensions) == 2) or (dimensions[0] >= self.latent_dim) or (dimensions[1] >= self.latent_dim):
@@ -146,4 +146,4 @@ class VAE(keras.Model):
                 col_index += 1
             row_index += 1
         if savefig == True:
-            plt.savefig('latent_space.png')
+            plt.savefig(name)

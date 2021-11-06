@@ -105,9 +105,12 @@ class VAE(keras.Model):
             "kl_loss": self.kl_loss_tracker.result(),
         }
     
-    def reconstruct_input(self, data):
+    def reconstruct_input(self, data, mean=True):
         z_mean, z_log_var, z = self.encoder(data)
-        reconstruction = self.decoder(z_mean)
+        if mean:
+            reconstruction = self.decoder(z_mean)
+        else:
+            reconstruction = self.decoder(z)
         reconstruction_loss = tf.keras.losses.MeanSquaredError(reduction="auto")(data, reconstruction)
         kl_loss = -0.5 * (1 + z_log_var - tf.square(z_mean) - tf.exp(z_log_var))
         kl_loss = tf.reduce_mean(tf.reduce_sum(kl_loss, axis=1))

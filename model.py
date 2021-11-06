@@ -109,3 +109,21 @@ class VAE(keras.Model):
     
     def get_lr(self):
         return self.optimizer.lr.numpy()
+
+    def plot_latent_space(self, sub_len=20, step=.2, savefig=False): # generalizza a più dimensioni
+        fig, axs = plt.subplots(sub_len, sub_len, sharex='all', sharey='all', figsize=(10, 10))
+        row_index = 0
+        for first_dim in range(-int(sub_len/2), int(sub_len/2)):
+            col_index = 0
+            for second_dim in range(-int(sub_len/2), int(sub_len/2)):
+                point = array([[first_dim*step, second_dim*step]])
+                generated = self.decoder.predict(point).tolist()[0]
+                x_axis = [el[0] for el in generated]
+                y_axis = [el[1] for el in generated]
+                axs[row_index][col_index].plot(x_axis, y_axis, linewidth=1)
+                axs[row_index][col_index].get_xaxis().set_visible(False)
+                axs[row_index][col_index].get_yaxis().set_visible(False)
+                col_index += 1
+            row_index += 1
+        if savefig == True:
+            plt.savefig('latent_space.png')

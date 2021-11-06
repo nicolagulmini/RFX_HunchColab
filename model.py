@@ -6,6 +6,7 @@ import numpy as np
 import tensorflow as tf
 from tensorflow import keras
 from tensorflow.keras import layers
+from tensorflow.keras.callbacks import LearningRateScheduler
 
 class Sampling(layers.Layer):
 
@@ -100,3 +101,8 @@ class VAE(keras.Model):
         kl_loss = tf.reduce_mean(tf.reduce_sum(kl_loss, axis=1))
         total_loss = reconstruction_loss + self.beta*kl_loss
         return reconstruction, reconstruction_loss, kl_loss, total_loss
+    
+    def learning_rate_scheduler(epoch, lr):
+        if epoch < 10:
+            return lr
+        return lr*tf.math.exp(-0.1)

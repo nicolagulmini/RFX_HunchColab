@@ -17,6 +17,32 @@ class Sampling(layers.Layer):
         dim = tf.shape(z_mean)[1]
         epsilon = tf.keras.backend.random_normal(shape=(batch, dim))
         return z_mean + tf.exp(0.5 * z_log_var) * epsilon
+    
+class CustomLearningRateScheduler(keras.callbacks.Callback):
+
+    def __init__(self, schedule):
+        super(CustomLearningRateScheduler, self).__init__()
+        self.schedule = schedule
+
+    def on_epoch_begin(self, epoch, logs=None):
+        if not hasattr(self.model.optimizer, "lr"):
+            raise ValueError('Optimizer must have a "lr" attribute.')
+        lr = float(tf.keras.backend.get_value(self.model.optimizer.learning_rate))
+        scheduled_lr = self.schedule(epoch, lr)
+        tf.keras.backend.set_value(self.model.optimizer.lr, scheduled_lr)
+        print("\nEpoch %d: Learning rate is %6.4f." % (epoch, scheduled_lr))
+        
+class betaScheduler(keras.callbacks.Callback):
+
+    def __init__(self, schedule):
+        super(betaScheduler, self).__init__()
+        self.schedule = schedule
+
+    def on_epoch_begin(self, epoch, logs=None):
+        beta = float(tf.keras.backend.get_value(self.model.beta))
+        scheduled_beta = self.schedule(epoch, beta)
+        tf.keras.backend.set_value(self.model.beta, scheduled_beta)
+        print("\nEpoch %d: beta parameter is %6.4f." % (epoch, scheduled_beta))
 
 def encoder(input_shape, latent_dim, name='encoder', summary=False):
     encoder_inputs = keras.Input(shape=input_shape)

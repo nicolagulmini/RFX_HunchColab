@@ -112,7 +112,7 @@ class VAE(keras.Model):
         return self.optimizer.lr.numpy()
 
     def plot_latent_space(self, sub_len=20, step=.2, savefig=False): # generalizza a più dimensioni
-        fig, axs = plt.subplots(sub_len, sub_len, sharex='all', sharey='all', figsize=(10, 10))
+        fig, axs = plt.subplots(sub_len, sub_len, sharex='all', sharey='all', figsize=(20, 20))
         row_index = 0
         for first_dim in range(-int(sub_len/2), int(sub_len/2)):
             col_index = 0

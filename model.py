@@ -120,7 +120,7 @@ class VAE(keras.Model):
     def get_lr(self):
         return self.optimizer.lr.numpy()
 
-    def plot_latent_space(self, sub_len=20, step=.2, dimensions=[1, 1] savefig=False): 
+    def plot_latent_space(self, sub_len=20, step=.2, dimensions=[1, 1], savefig=False): 
         fig, axs = plt.subplots(sub_len, sub_len, sharex='all', sharey='all', figsize=(sub_len, sub_len))
         
         tmp_pos = [i for i,x in enumerate(dimensions) if x==1]

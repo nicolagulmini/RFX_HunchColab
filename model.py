@@ -120,13 +120,23 @@ class VAE(keras.Model):
     def get_lr(self):
         return self.optimizer.lr.numpy()
 
-    def plot_latent_space(self, sub_len=20, step=.2, savefig=False): # generalizza a più dimensioni
-        fig, axs = plt.subplots(sub_len, sub_len, sharex='all', sharey='all', figsize=(20, 20))
+    def plot_latent_space(self, sub_len=20, step=.2, dimensions=[1, 1] savefig=False): 
+        fig, axs = plt.subplots(sub_len, sub_len, sharex='all', sharey='all', figsize=(sub_len, sub_len))
+        
+        tmp_pos = [i for i,x in enumerate(dimensions) if x==1]
+        if not (len(tmp_pos) == 2):
+            print("Error in dimensions. Return.")
+            return
+        first_pos, second_pos = tmp_pos
+                       
         row_index = 0
         for first_dim in range(-int(sub_len/2), int(sub_len/2)):
             col_index = 0
             for second_dim in range(-int(sub_len/2), int(sub_len/2)):
-                point = np.array([[first_dim*step, second_dim*step]])
+                tmp_vec = [0 for _ in range(self.latent_dim)]
+                tmp_vec[first_pos] = first_dim*step
+                tmp_vec[second_pos] = second_dim*step
+                point = np.array([tmp_vec])
                 generated = self.decoder.predict(point).tolist()[0]
                 x_axis = [el[0] for el in generated]
                 y_axis = [el[1] for el in generated]

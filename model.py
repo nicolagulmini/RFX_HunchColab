@@ -55,13 +55,8 @@ def decoder(latent_dim, target_shape, name='decoder', summary=False):
 
     return decoder_model
 
-def learning_rate_scheduler(epoch, lr):
-    if epoch < 10:
-        return lr
-    return lr*tf.math.exp(-0.1)
-
 class VAE(keras.Model):
-    def __init__(self, input_shape, latent_dim, **kwargs):
+    def __init__(self, input_shape, latent_dim, beta=1, **kwargs):
         super(VAE, self).__init__(**kwargs)
         self.encoder = encoder(input_shape, latent_dim)
         self.decoder = decoder(latent_dim, input_shape)
@@ -70,7 +65,7 @@ class VAE(keras.Model):
             name="reconstruction_loss"
         )
         self.kl_loss_tracker = keras.metrics.Mean(name="kl_loss")
-        self.beta = 0.001
+        self.beta = tf.Variable(beta)
 
     @property
     def metrics(self):

@@ -121,14 +121,13 @@ class VAE(keras.Model):
     def get_lr(self):
         return self.optimizer.lr.numpy()
 
-    def plot_latent_space(self, sub_len=20, step=.2, dimensions=[1, 1], savefig=False): 
+    def plot_latent_space(self, sub_len=20, step=.2, dimensions=[0, 1], savefig=False): 
         fig, axs = plt.subplots(sub_len, sub_len, sharex='all', sharey='all', figsize=(sub_len, sub_len))
-        
-        tmp_pos = [i for i,x in enumerate(dimensions) if x==1]
-        if not (len(tmp_pos) == 2):
+
+        if (not len(dimensions) == 2) or (dimensions[0] >= self.latent_dim) or (dimensions[1] >= self.latent_dim):
             print("Error in dimensions. Return.")
             return
-        first_pos, second_pos = tmp_pos
+        first_pos, second_pos = dimensions
                        
         row_index = 0
         for first_dim in range(-int(sub_len/2), int(sub_len/2)):

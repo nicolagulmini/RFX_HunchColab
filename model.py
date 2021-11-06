@@ -106,3 +106,6 @@ class VAE(keras.Model):
         if epoch < 10:
             return lr
         return lr*tf.math.exp(-0.1)
+    
+    def get_lr(self):
+        return self.optimizer.lr.numpy()

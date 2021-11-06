@@ -117,7 +117,7 @@ class VAE(keras.Model):
         for first_dim in range(-int(sub_len/2), int(sub_len/2)):
             col_index = 0
             for second_dim in range(-int(sub_len/2), int(sub_len/2)):
-                point = array([[first_dim*step, second_dim*step]])
+                point = np.array([[first_dim*step, second_dim*step]])
                 generated = self.decoder.predict(point).tolist()[0]
                 x_axis = [el[0] for el in generated]
                 y_axis = [el[1] for el in generated]

@@ -33,12 +33,16 @@ def encoder(input_shape, latent_dim, name='encoder', summary=False):
     encoder_inputs = keras.Input(shape=input_shape)
     flat = layers.Flatten()(encoder_inputs)
 
-    dense = layers.Dense((20*latent_dim))(flat) # no activation
-    dense = layers.Dense((20*latent_dim))(dense) # no activation
-    dense = layers.Dense((10*latent_dim))(dense) # no activation
-    dense = layers.Dense((10*latent_dim))(dense) # no activation
+    dense = layers.Dense((20*latent_dim), activation='relu')(flat)
+    drop = layers.Dropout(0.1)(dense)
+    dense = layers.Dense((20*latent_dim), activation='relu')(drop)
+    drop = layers.Dropout(0.2)(dense)
+    dense = layers.Dense((10*latent_dim), activation='relu')(drop)
+    drop = layers.Dropout(0.3)(dense)
+    dense = layers.Dense((10*latent_dim), activation='relu')(drop)
+    drop = layers.Dropout(0.3)(dense)
     
-    z_mean = layers.Dense((latent_dim), use_bias=False, name="z_mean")(dense) # also here a linear activation function 
+    z_mean = layers.Dense((latent_dim), use_bias=False, name="z_mean")(drop)
     z_log_var = layers.Dense((latent_dim), name="z_log_var")(dense)
     z = Sampling()([z_mean, z_log_var])
 
@@ -52,12 +56,16 @@ def encoder(input_shape, latent_dim, name='encoder', summary=False):
 def decoder(latent_dim, target_shape, name='decoder', summary=False):
     latent_inputs = keras.Input(shape=(latent_dim,)) # this layer takes only the sampled z vector
     
-    dense = layers.Dense((10*latent_dim))(latent_inputs) # no activation
-    dense = layers.Dense((10*latent_dim))(dense) # no activation
-    dense = layers.Dense((20*latent_dim))(dense) # no activation
-    dense = layers.Dense((20*latent_dim))(dense) # no activation
+    dense = layers.Dense((10*latent_dim), activation='relu')(latent_inputs) 
+    drop = layers.Dropout(0.1)(dense)
+    dense = layers.Dense((10*latent_dim), activation='relu')(drop) 
+    drop = layers.Dropout(0.2)(dense)
+    dense = layers.Dense((20*latent_dim), activation='relu')(drop)
+    drop = layers.Dropout(0.3)(dense)
+    dense = layers.Dense((20*latent_dim), activation='relu')(drop)
+    drop = layers.Dropout(0.3)(dense)
     
-    dense = layers.Dense((np.prod(target_shape)), activation='sigmoid')(dense) # no activation
+    dense = layers.Dense((np.prod(target_shape)), use_bias=False, activation='sigmoid')(drop)
     reshaped = layers.Reshape(target_shape)(dense)
     decoder_model = keras.Model(latent_inputs, reshaped, name=name)
 

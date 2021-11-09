@@ -37,7 +37,7 @@ def encoder(input_shape, latent_dim, name='encoder', summary=False):
 
     return encoder_model
 
-def decoder(latent_dim, low_res_shape, high_res_shape, name='decoder', summary=False):
+def decoder(latent_dim, low_res_shape, high_res_shape, window_size=10, window_slide=10, name='decoder', summary=False):
     latent_inputs = keras.Input(shape=(latent_dim,)) # this layer takes only the sampled z vector
     
     dense = layers.Dense((10*latent_dim), activation='relu')(latent_inputs) 
@@ -76,11 +76,11 @@ def down_sampler(input_shape, output_shape):
     return model
 
 class VAE(keras.Model):
-    def __init__(self, low_res_shape, high_res_shape, latent_dim=2, beta=1., **kwargs):
+    def __init__(self, low_res_shape, high_res_shape, window_size=10, window_slide=10, latent_dim=2, beta=1., **kwargs):
         super(VAE, self).__init__(**kwargs)
         self.latent_dim = latent_dim
         self.encoder = encoder(low_res_shape, latent_dim)
-        self.decoder = decoder(latent_dim, low_res_shape, high_res_shape)
+        self.decoder = decoder(latent_dim, low_res_shape, high_res_shape, window_size, window_slide)
         self.down_sampler = down_sampler(high_res_shape, low_res_shape)
         self.total_loss_tracker = keras.metrics.Mean(name="total_loss")
         self.reconstruction_loss_tracker = keras.metrics.Mean(

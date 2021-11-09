@@ -139,9 +139,6 @@ class VAE(keras.Model):
     def plot_latent_space(self, sub_len=20, step=.2, dimensions=[0, 1], savefig=False, name='latent_space.png'): 
         fig, axs = plt.subplots(sub_len, sub_len, sharex='all', sharey='all', figsize=(sub_len, sub_len))
 
-        if (not len(dimensions) == 2) or (dimensions[0] >= self.latent_dim) or (dimensions[1] >= self.latent_dim):
-            print("Error in dimensions. Return.")
-            return
         first_pos, second_pos = dimensions
                        
         row_index = 0
@@ -152,7 +149,7 @@ class VAE(keras.Model):
                 tmp_vec[first_pos] = first_dim*step
                 tmp_vec[second_pos] = second_dim*step
                 point = np.array([tmp_vec])
-                generated = self.decoder.predict(point).tolist()[0]
+                generated = self.decoder.predict(point)[1].tolist()[0]
                 x_axis = [el[0] for el in generated]
                 y_axis = [el[1] for el in generated]
                 axs[row_index][col_index].plot(x_axis, y_axis, linewidth=1)

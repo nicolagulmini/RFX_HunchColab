@@ -96,9 +96,8 @@ class VAE(keras.Model):
             z_mean, z_log_var, z = self.encoder(data)
             reconstruction = self.decoder(z)
             nan_mask = layers.Lambda(lambda x: tf.where(tf.math.is_nan(x), tf.zeros_like(x), x))
-            masked_reconstruction = nan_mask(reconstruction)
             masked_data = nan_mask(data)
-            reconstruction_loss = tf.keras.losses.MeanSquaredError(reduction="auto")(masked_data, masked_reconstruction)
+            reconstruction_loss = tf.keras.losses.MeanSquaredError(reduction="auto")(masked_data, reconstruction)
             kl_loss = -0.5 * (1 + z_log_var - tf.square(z_mean) - tf.exp(z_log_var))
             kl_loss = tf.reduce_mean(tf.reduce_sum(kl_loss, axis=1))
             total_loss = reconstruction_loss + self.beta*kl_loss
@@ -119,10 +118,9 @@ class VAE(keras.Model):
             reconstruction = self.decoder(z_mean)
         else:
             reconstruction = self.decoder(z)
-        nan_mask = layers.Lambda(lambda x: tf.where(tf.math.is_nan(x), tf.zeros_like(x), x))(flat)
-        masked_reconstruction = nan_mask(reconstruction)
+        nan_mask = layers.Lambda(lambda x: tf.where(tf.math.is_nan(x), tf.zeros_like(x), x))
         masked_data = nan_mask(data)
-        reconstruction_loss = tf.keras.losses.MeanSquaredError(reduction="auto")(masked_data, masked_reconstruction)
+        reconstruction_loss = tf.keras.losses.MeanSquaredError(reduction="auto")(masked_data, reconstruction)
         kl_loss = -0.5 * (1 + z_log_var - tf.square(z_mean) - tf.exp(z_log_var))
         kl_loss = tf.reduce_mean(tf.reduce_sum(kl_loss, axis=1))
         total_loss = reconstruction_loss + self.beta*kl_loss

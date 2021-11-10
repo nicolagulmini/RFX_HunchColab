@@ -1,7 +1,3 @@
-# VAE
-
-# note that it is necessary to compile it before training it!
-
 import numpy as np
 import matplotlib.pyplot as plt
 import tensorflow as tf
@@ -32,8 +28,8 @@ class betaScheduler(keras.callbacks.Callback):
 def encoder(input_shape, latent_dim, name='encoder', summary=False):
     encoder_inputs = keras.Input(shape=input_shape)
     flat = layers.Flatten()(encoder_inputs)
-
-    dense = layers.Dense((20*latent_dim), activation='relu')(flat)
+    nan_mask = layers.Lambda(lambda x: tf.where(tf.math.is_nan(x), tf.zeros_like(x), x))(flat)
+    dense = layers.Dense((20*latent_dim), activation='relu')(nan_mask)
     drop = layers.Dropout(0.1)(dense)
     dense = layers.Dense((20*latent_dim), activation='relu')(drop)
     drop = layers.Dropout(0.2)(dense)
@@ -98,8 +94,11 @@ class VAE(keras.Model):
     def train_step(self, data):
         with tf.GradientTape() as tape:
             z_mean, z_log_var, z = self.encoder(data)
-            reconstruction = self.decoder(z)#z_mean)#z)
-            reconstruction_loss = tf.keras.losses.MeanSquaredError(reduction="auto")(data, reconstruction)
+            reconstruction = self.decoder(z)
+            nan_mask = layers.Lambda(lambda x: tf.where(tf.math.is_nan(x), tf.zeros_like(x), x))
+            masked_reconstruction = nan_mask(reconstruction)
+            masked_data = nan_mask(data)
+            reconstruction_loss = tf.keras.losses.MeanSquaredError(reduction="auto")(masked_data, masked_reconstruction)
             kl_loss = -0.5 * (1 + z_log_var - tf.square(z_mean) - tf.exp(z_log_var))
             kl_loss = tf.reduce_mean(tf.reduce_sum(kl_loss, axis=1))
             total_loss = reconstruction_loss + self.beta*kl_loss
@@ -120,7 +119,10 @@ class VAE(keras.Model):
             reconstruction = self.decoder(z_mean)
         else:
             reconstruction = self.decoder(z)
-        reconstruction_loss = tf.keras.losses.MeanSquaredError(reduction="auto")(data, reconstruction)
+        nan_mask = layers.Lambda(lambda x: tf.where(tf.math.is_nan(x), tf.zeros_like(x), x))(flat)
+        masked_reconstruction = nan_mask(reconstruction)
+        masked_data = nan_mask(data)
+        reconstruction_loss = tf.keras.losses.MeanSquaredError(reduction="auto")(masked_data, masked_reconstruction)
         kl_loss = -0.5 * (1 + z_log_var - tf.square(z_mean) - tf.exp(z_log_var))
         kl_loss = tf.reduce_mean(tf.reduce_sum(kl_loss, axis=1))
         total_loss = reconstruction_loss + self.beta*kl_loss

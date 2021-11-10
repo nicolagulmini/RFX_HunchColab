@@ -158,3 +158,22 @@ class VAE(keras.Model):
             row_index += 1
         if savefig == True:
             plt.savefig(name)
+            
+   def parallel_latent_visualization(self, data, favourite_dim=0, colorscale='Electric', showscale=True):
+        # https://plotly.com/python/parallel-coordinates-plot/
+        import plotly.express as px
+        mean = self.encoder(data)[0].numpy()
+        dimensions = []
+        for _ in range(self.latent_dim):
+            dimensions.append(array([el[_] for el in mean]))
+
+        fig = go.Figure(data = go.Parcoords(
+                line = dict(color = dimensions[favourite_dim], colorscale=colorscale,
+                        showscale=showscale,
+                        cmin = min(dimensions[favourite_dim]),
+                        cmax = max(dimensions[favourite_dim])),
+                dimensions = list([
+                    dict(range = [min(dimensions[i]),max(dimensions[i])],
+                        label = str(i+1) + " - dimension", values = dimensions[i]) for i in range(self.latent_dim)])))
+
+        fig.show()

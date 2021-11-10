@@ -4,6 +4,7 @@ import tensorflow as tf
 from tensorflow import keras
 from tensorflow.keras import layers
 import plotly.express as px
+import plotly.graph_objects as go
 
 class Sampling(layers.Layer):
 

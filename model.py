@@ -3,6 +3,7 @@ import matplotlib.pyplot as plt
 import tensorflow as tf
 from tensorflow import keras
 from tensorflow.keras import layers
+import plotly.express as px
 
 class Sampling(layers.Layer):
 
@@ -159,9 +160,8 @@ class VAE(keras.Model):
         if savefig == True:
             plt.savefig(name)
             
-   def parallel_latent_visualization(self, data, favourite_dim=0, colorscale='Electric', showscale=True):
+    def parallel_latent_visualization(self, data, favourite_dim=0, colorscale='Electric', showscale=True):
         # https://plotly.com/python/parallel-coordinates-plot/
-        import plotly.express as px
         mean = self.encoder(data)[0].numpy()
         dimensions = []
         for _ in range(self.latent_dim):
@@ -175,5 +175,4 @@ class VAE(keras.Model):
                 dimensions = list([
                     dict(range = [min(dimensions[i]),max(dimensions[i])],
                         label = str(i+1) + " - dimension", values = dimensions[i]) for i in range(self.latent_dim)])))
-
         fig.show()

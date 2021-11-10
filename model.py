@@ -1,7 +1,7 @@
 import numpy as np
 import matplotlib.pyplot as plt
 import tensorflow as tf
-from math import pi
+#from math import pi
 from tensorflow import keras
 from tensorflow.keras import layers
 import plotly.express as px
@@ -32,7 +32,6 @@ class betaScheduler(keras.callbacks.Callback):
 def encoder(input_shape, latent_dim, name='encoder', summary=False):
     encoder_inputs = keras.Input(shape=input_shape)
     masked_input = tf.keras.layers.Lambda(lambda x: tf.where(tf.math.is_nan(x), tf.zeros_like(x), x))(encoder_inputs)
-    #masked_input = tf.keras.layers.Multiply()([encoder_inputs, mask])
     flat = layers.Flatten()(masked_input)
     dense = layers.Dense((20*latent_dim), activation='relu')(flat)
     drop = layers.Dropout(0.1)(dense)

@@ -165,7 +165,7 @@ class VAE(keras.Model):
         mean = self.encoder(data)[0].numpy()
         dimensions = []
         for _ in range(self.latent_dim):
-            dimensions.append(array([el[_] for el in mean]))
+            dimensions.append(np.array([el[_] for el in mean]))
 
         fig = go.Figure(data = go.Parcoords(
                 line = dict(color = dimensions[favourite_dim], colorscale=colorscale,

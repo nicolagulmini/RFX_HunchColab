@@ -14,7 +14,10 @@ def test_generate_gaussian_mixture_curve(n_p=2000, n_g=2, mean_and_vars=[(0,1), 
 
 def generate_gaussian_mixture_curve(n_p=100, mean_and_vars=[(0,0.01), (0.5,0.01)], awgn_dev=.001, bidim_points=False):
     x = linspace(0, 1, n_p)
-    y = [sum([norm.pdf(el, mean_and_vars[i][0], mean_and_vars[i][1])+normal(0, awgn_dev) for i in range(len(mean_and_vars))]) for el in x]
+    y = [sum([norm.pdf(el, mean_and_vars[i][0], mean_and_vars[i][1]) for i in range(len(mean_and_vars))]) for el in x]
+    if not awgn_dev == 0:
+        for i in range(len(y)):
+            y[i] += normal(0, awgn_dev)
     y = y/max(y)
     if bidim_points:
         bidim_curve = []

@@ -26,3 +26,15 @@ def generate_gaussian_mixture_curve(n_p=100, mean_and_vars=[(0,0.01), (0.5,0.01)
             bidim_curve.append(point)
         return array(bidim_curve)
     return x, y
+
+def add_noise(bidim_curves, awgn_dev=.001):
+    if awgn_dev == 0:
+        return bidim_curves
+    noisy_curves = []
+    for curve in bidim_curves:
+        noisy_tmp_curve = []
+        for point in curve:
+            noisy_tmp_curve.append(array([point[0], point[1]+normal(0, awgn_dev)]))
+        noisy_curves.append(array(noisy_tmp_curve))
+    return array(noisy_curves)
+            

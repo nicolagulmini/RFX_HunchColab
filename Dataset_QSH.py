@@ -20,9 +20,9 @@ import matplotlib.patches as patches
 import matplotlib.colors as colors 
 
 import copy
-import models.base
+import VAE_for_plasma_physics.models as models
 
-import Hunch_utils  as Htls
+import VAE_for_plasma_physics.Hunch_utils as Htls
 
 
 

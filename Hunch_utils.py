@@ -8,7 +8,6 @@ from sklearn import metrics
 from sklearn import model_selection
 from sklearn import preprocessing
 
-
 import tensorflow as tf
 import abc
 
@@ -20,7 +19,7 @@ import matplotlib.patches as patches
 import matplotlib.colors as colors 
 
 import copy
-import models.base
+import VAE_for_plasma_physics.models as models
 
 
 

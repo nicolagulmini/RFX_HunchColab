@@ -11,7 +11,7 @@ import numpy as np
 import tensorflow as tf
 import abc
 
-import models
+import VAE_for_plasma_physics.models as models
 
 # !pip install --user nbmultitask
 # from nbmultitask import ThreadWithLogAndControls

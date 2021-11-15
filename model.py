@@ -33,13 +33,13 @@ def encoder(input_shape, latent_dim, name='encoder', summary=False):
     encoder_inputs = keras.Input(shape=input_shape)
     masked_input = tf.keras.layers.Lambda(lambda x: tf.where(tf.math.is_nan(x), tf.zeros_like(x), x))(encoder_inputs)
     flat = layers.Flatten()(masked_input)
-    dense = layers.Dense((20*latent_dim), activation='relu')(flat)
+    dense = layers.Dense((800), activation='relu')(flat)
     drop = layers.Dropout(0.1)(dense)
-    dense = layers.Dense((20*latent_dim), activation='relu')(drop)
+    dense = layers.Dense((800), activation='relu')(drop)
     drop = layers.Dropout(0.2)(dense)
-    dense = layers.Dense((10*latent_dim), activation='relu')(drop)
+    dense = layers.Dense((400), activation='relu')(drop)
     drop = layers.Dropout(0.3)(dense)
-    dense = layers.Dense((10*latent_dim), activation='relu')(drop)
+    dense = layers.Dense((400), activation='relu')(drop)
     drop = layers.Dropout(0.3)(dense)
     
     z_mean = layers.Dense((latent_dim), use_bias=False, name="z_mean")(drop)
@@ -56,13 +56,13 @@ def encoder(input_shape, latent_dim, name='encoder', summary=False):
 def decoder(latent_dim, target_shape, name='decoder', summary=False):
     latent_inputs = keras.Input(shape=(latent_dim,)) # this layer takes only the sampled z vector
     
-    dense = layers.Dense((10*latent_dim), activation='relu')(latent_inputs) 
+    dense = layers.Dense((400), activation='relu')(latent_inputs) 
     drop = layers.Dropout(0.1)(dense)
-    dense = layers.Dense((10*latent_dim), activation='relu')(drop) 
+    dense = layers.Dense((400), activation='relu')(drop) 
     drop = layers.Dropout(0.2)(dense)
-    dense = layers.Dense((20*latent_dim), activation='relu')(drop)
+    dense = layers.Dense((800), activation='relu')(drop)
     drop = layers.Dropout(0.3)(dense)
-    dense = layers.Dense((20*latent_dim), activation='relu')(drop)
+    dense = layers.Dense((800), activation='relu')(drop)
     drop = layers.Dropout(0.3)(dense)
     
     dense = layers.Dense((np.prod(target_shape)), use_bias=False, activation='sigmoid')(drop)

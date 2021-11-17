@@ -43,7 +43,7 @@ def encoder(input_shape, latent_dim, name='encoder', summary=False):
     drop = layers.Dropout(0.3)(dense)
     
     z_mean = layers.Dense((latent_dim), use_bias=False, name="z_mean")(drop)
-    z_log_var = layers.Dense((latent_dim), name="z_log_var")(dense)
+    z_log_var = layers.Dense((latent_dim), name="z_log_var")(drop)
     z = Sampling()([z_mean, z_log_var])
 
     encoder_model = keras.Model(encoder_inputs, [z_mean, z_log_var, z], name=name)
